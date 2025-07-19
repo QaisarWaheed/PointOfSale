@@ -12,7 +12,7 @@ import {
   NumberInput,
 } from "@mantine/core";
 import type { JSX } from "react";
-import { DateInput } from "@mantine/dates";
+import CustomDateInput from "../../components/CustomDateInput";
 
 type Element = {
   expenseId: string;
@@ -152,20 +152,7 @@ const Expenses = (): JSX.Element => {
               placeholder="Select Category"
               data={["Office Supplies", "Travel", "Ultilities", "Rent"]}
             />
-            <DateInput
-              styles={{
-                input: {
-                  backgroundColor: "transparent",
-                  color: "#FFFFFF",
-                  border: "1px solid #27272A",
-                },
-              }}
-              c={"white"}
-              w={360}
-              valueFormat="YYYY MMM DD"
-              label="Date input"
-              placeholder="Date"
-            />
+            <CustomDateInput mt={23} />
             <NumberInput
               styles={{
                 input: {

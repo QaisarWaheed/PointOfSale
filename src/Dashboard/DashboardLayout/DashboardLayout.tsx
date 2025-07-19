@@ -1,11 +1,9 @@
 import { AppShell, Avatar, Burger, Group, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-
 import { NavLink, Outlet } from "react-router";
 
 const DashboardLayout = () => {
   const [opened, { toggle }] = useDisclosure();
-
   return (
     <AppShell
       header={{ height: 60 }}
@@ -19,7 +17,9 @@ const DashboardLayout = () => {
       <AppShell.Header bg={"#09090B"}>
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         <Group justify="space-between" mr={25}>
-          <Text mt={5}>Logo</Text>
+          <Text mt={5} c={"white"}>
+            Logo
+          </Text>
           <Avatar mt={10} />
         </Group>
       </AppShell.Header>
@@ -32,9 +32,9 @@ const DashboardLayout = () => {
         <NavLink to={"../dashboard/accounts"}>Accounts</NavLink>
         <NavLink to={"../dashboard/expenses"}>Expenses</NavLink>
         <NavLink to={"../dashboard/cash-flow"}>Cash Flow</NavLink>
-        <NavLink to={""}>Reports</NavLink>
-        <NavLink to={""}>User Management</NavLink>
-        <NavLink to={""}>Point of Sale</NavLink>
+        <NavLink to={"../dashboard/report"}>Reports</NavLink>
+        <NavLink to={"../dashboard/user-management"}>User Management</NavLink>
+        <NavLink to={"../dashboard/point-of-sale"}>Point of Sale</NavLink>
       </AppShell.Navbar>
 
       <AppShell.Main bg={"#1C1B22"}>

@@ -7,7 +7,9 @@ import Inventory from "../pages/Inventory";
 import Accounts from "../pages/Accounts";
 import Expenses from "../pages/Expenses";
 import CashFlow from "../pages/CashFlow";
-
+import Report from "../pages/Report";
+import UserManagement from "../pages/Usermanagement";
+import PointOfSale from "../pages/PointOfSale";
 const routes: RouteObject[] = [
   {
     path: "/dashboard",
@@ -40,6 +42,18 @@ const routes: RouteObject[] = [
       {
         path: "cash-flow",
         element: <CashFlow />,
+      },
+      {
+        path: "report",
+        element: <Report />,
+      },
+      {
+        path: "user-management",
+        element: <UserManagement />,
+      },
+      {
+        path: "point-of-sale",
+        element: <PointOfSale />,
       },
     ],
   },
