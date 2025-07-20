@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import type { JSX } from "react";
-
+import { useNavigate } from 'react-router-dom';
 type Status = "in-stock" | "low-stock" | "out-of-stock";
 
 type Element = {
@@ -28,23 +28,11 @@ type Element = {
 const StatusBadge = ({ status }: { status: Status }) => {
   switch (status) {
     case "in-stock":
-      return (
-        <Badge color="dark" variant="filled" radius="sm">
-          In Stock
-        </Badge>
-      );
+      return <Badge color="dark">In Stock</Badge>;
     case "low-stock":
-      return (
-        <Badge color="red" variant="filled" radius="sm">
-          Low Stock
-        </Badge>
-      );
+      return <Badge color="red">Low Stock</Badge>;
     case "out-of-stock":
-      return (
-        <Badge color="gray" variant="outline" radius="sm">
-          Out of Stock
-        </Badge>
-      );
+      return <Badge color="gray" variant="outline">Out of Stock</Badge>;
     default:
       return null;
   }
@@ -95,7 +83,13 @@ const elements: Element[] = [
 
 const Inventory = (): JSX.Element => {
   const [search, setSearch] = useState("");
-  const rows = elements.map((element) => (
+  const navigate = useNavigate();
+
+  const filtered = elements.filter((e) =>
+    e.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const rows = filtered.map((element) => (
     <Table.Tr
       key={element.name}
       style={{
@@ -109,49 +103,41 @@ const Inventory = (): JSX.Element => {
         e.currentTarget.style.backgroundColor = "transparent";
       }}
     >
-      <Table.Td c={"#A1A1AA"}>{element.name}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.sku}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.hsCode}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.stock}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.price}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.supplier}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>
-        <StatusBadge status={element.status} />
-      </Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.name}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.sku}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.hsCode}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.stock}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.price}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.supplier}</Table.Td>
+      <Table.Td c="#A1A1AA"><StatusBadge status={element.status} /></Table.Td>
+      <Table.Td c="#A1A1AA">{element.action}</Table.Td>
     </Table.Tr>
   ));
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.currentTarget.value);
-  };
 
   return (
     <>
-      <Stack mt={20}>
-        <Group justify="space-between" mb="md">
-          <Stack gap={0} ml={20}>
-            <Title order={2} c={"white"}>
+      <Stack mt={20} px="md">
+        <Group justify="space-between" mb="md" wrap="wrap">
+          <Stack gap={0}>
+            <Title order={2} c="white">
               Inventory Management
             </Title>
           </Stack>
           <Group>
             <Button color="#27272A">Export</Button>
-            <Button color="#ffffff" c="black" w={150}>
+            <Button onClick={() => navigate('/dashboard/inventory/add-product')} color="#ffffff" c="black" w={150}>
               Add Product
             </Button>
           </Group>
         </Group>
       </Stack>
-      <Paper withBorder bg={"#111111ff"} radius="md" mt={20}>
-        <Stack gap={0} ml={20} mt={20}>
-          <Title order={3} c={"white"}>
-            Product List
-          </Title>
-          <Text c={"#A1A1AA"}>
-            Manage your products and their stock levels.
-          </Text>
+
+      <Paper withBorder bg="#111111ff" radius="md" mt={20} px="md" py="lg">
+        <Stack gap="xs">
+          <Title order={3} c="white">Product List</Title>
+          <Text c="#A1A1AA">Manage your products and their stock levels.</Text>
           <TextInput
-            w={600}
+            w="100%"
             styles={{
               input: {
                 backgroundColor: "transparent",
@@ -161,32 +147,37 @@ const Inventory = (): JSX.Element => {
             }}
             placeholder="Search by name..."
             value={search}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearch(e.currentTarget.value)}
             radius="md"
             mb="md"
           />
         </Stack>
-        <Table
-          horizontalSpacing="xl"
-          verticalSpacing="xl"
-          highlightOnHover
-          c={"white"}
-          bg={"#111111ff"}
-        >
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Element name</Table.Th>
-              <Table.Th>SKU</Table.Th>
-              <Table.Th>HSCode</Table.Th>
-              <Table.Th>Stock</Table.Th>
-              <Table.Th>Price</Table.Th>
-              <Table.Th>Supplier</Table.Th>
-              <Table.Th>Status</Table.Th>
-              <Table.Th>Actions</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+
+        
+        <div style={{ overflowX: "auto" }}>
+          <Table
+            horizontalSpacing="md"
+            verticalSpacing="md"
+            highlightOnHover
+            c="white"
+            bg="#111111ff"
+            style={{ minWidth: "850px" }} 
+          >
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Element name</Table.Th>
+                <Table.Th>SKU</Table.Th>
+                <Table.Th>HSCode</Table.Th>
+                <Table.Th>Stock</Table.Th>
+                <Table.Th>Price</Table.Th>
+                <Table.Th>Supplier</Table.Th>
+                <Table.Th>Status</Table.Th>
+                <Table.Th>Actions</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </div>
       </Paper>
     </>
   );

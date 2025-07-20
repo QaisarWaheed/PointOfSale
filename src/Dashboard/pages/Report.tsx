@@ -1,50 +1,52 @@
 import { useState } from "react";
-import { Button, Select, Group, Title, Paper, Text } from "@mantine/core";
-import { SegmentedControl } from "@mantine/core";
+import {
+  Button,
+  Select,
+  Group,
+  Title,
+  Paper,
+  Text,
+  Stack,
+  Flex,
+  SegmentedControl,
+} from "@mantine/core";
+
 const Report = () => {
   const [value, setValue] = useState("react");
+
   return (
-    <>
-      <Group mt={20} justify="space-between">
-        <Title order={3} c={"white"}>
+    <Stack gap="lg" mt={20}>
+      {/* Top header section */}
+      <Flex direction={{ base: "column", sm: "row" }} justify="space-between" wrap="wrap" gap="md">
+        <Title order={3} c="white">
           Report Center
         </Title>
-        <Group>
+        <Group justify="flex-end" wrap="wrap">
           <Button
             w={150}
             color="#09090B"
-            style={{
-              border: "1px solid grey",
-            }}
+            style={{ border: "1px solid grey" }}
           >
             Export PDF
           </Button>
           <Button
             w={150}
             color="#09090B"
-            style={{
-              border: "1px solid grey",
-            }}
+            style={{ border: "1px solid grey" }}
           >
             Export Excel
           </Button>
         </Group>
-      </Group>
-      <Group mt={30} justify="space-between">
+      </Flex>
+
+      {/* Filter section */}
+      <Flex direction={{ base: "column", md: "row" }} justify="space-between" wrap="wrap" gap="md">
         <SegmentedControl
-          w={400}
           radius={5}
-          mb={5}
           styles={{
-            root: {
-              backgroundColor: "#27272A",
-            },
-            label: {
-              color: "#ffffff",
-            },
-            indicator: {
-              backgroundColor: "#111111",
-            },
+            root: { backgroundColor: "#27272A" },
+            label: { color: "#ffffff" },
+            indicator: { backgroundColor: "#111111" },
           }}
           value={value}
           onChange={setValue}
@@ -56,7 +58,7 @@ const Report = () => {
           defaultValue="stock"
           transitionDuration={500}
         />
-        <Group>
+        <Group wrap="wrap">
           <Select
             styles={{
               input: {
@@ -65,10 +67,10 @@ const Report = () => {
                 border: "1px solid #27272A",
               },
             }}
-            w={120}
-            c={"white"}
+            w={150}
+            c="white"
             placeholder="Company"
-            data={["All Companies", "Acme Crop", "Beta ", "Beta Solutions"]}
+            data={["All Companies", "Acme Corp", "Beta", "Beta Solutions"]}
           />
           <Select
             styles={{
@@ -78,33 +80,26 @@ const Report = () => {
                 border: "1px solid #27272A",
               },
             }}
-            w={120}
-            c={"white"}
+            w={150}
+            c="white"
             placeholder="Product"
-            data={["All Companies", "Acme Crop", "Beta ", "Beta Solutions"]}
+            data={["All Products", "Product A", "Product B"]}
           />
           <Button color="#ffffff" c="black" w={150}>
             Apply Filters
           </Button>
         </Group>
-      </Group>
-      <Paper mt={5} bg={"#09090B"} h={400} withBorder>
-        <Paper h={130} bg={"#09090B"}>
+      </Flex>
+
+      {/* Report Section */}
+      <Paper mt={5} bg="#09090B" withBorder>
+        <Stack p="md" gap="sm">
           <SegmentedControl
-            w={300}
-            mt={20}
             radius={5}
-            ml={25}
             styles={{
-              root: {
-                backgroundColor: "#27272A",
-              },
-              label: {
-                color: "#ffffff",
-              },
-              indicator: {
-                backgroundColor: "#111111",
-              },
+              root: { backgroundColor: "#27272A" },
+              label: { color: "#ffffff" },
+              indicator: { backgroundColor: "#111111" },
             }}
             value={value}
             onChange={setValue}
@@ -115,18 +110,21 @@ const Report = () => {
             defaultValue="stock"
             transitionDuration={500}
           />
-          <Title ml={30} order={3} c={"white"}>
+          <Title order={3} c="white" mt={10}>
             Profit & Loss Report
           </Title>
-          <Text ml={30} size="sm" c={"#56565B"}>
+          <Text size="sm" c="#56565B">
             Financial performance summary.
           </Text>
-        </Paper>
-        <Paper h={200} bg={"#09090B"} m={"xl"} withBorder>
-          <Text c={"#56565B"}>Profit & Loss Report Data</Text>
+        </Stack>
+
+        <Paper h={200} bg="#09090B" m="md" withBorder>
+          <Text c="#56565B" p="md">
+            Profit & Loss Report Data
+          </Text>
         </Paper>
       </Paper>
-    </>
+    </Stack>
   );
 };
 

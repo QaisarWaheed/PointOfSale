@@ -10,7 +10,10 @@ import {
   TextInput,
   PasswordInput,
   Select,
+  Flex,
+  useMantineTheme,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import type { JSX } from "react";
 
 type Element = {
@@ -32,22 +35,21 @@ const elements: Element[] = [
   {
     userId: "U-002",
     name: "Accountant A",
-    email: "	accountant@example.com",
-    role: "	Accountant",
+    email: "accountant@example.com",
+    role: "Accountant",
     action: "...",
   },
   {
     userId: "U-003",
     name: "Sales Operator 1",
     email: "sales1@example.com",
-    role: "	Sales Operator",
-
+    role: "Sales Operator",
     action: "...",
   },
   {
     userId: "U-004",
     name: "Staff Member",
-    email: "sales1@example.com",
+    email: "staff@example.com",
     role: "Staff",
     action: "...",
   },
@@ -55,6 +57,9 @@ const elements: Element[] = [
 
 const UserManagement = (): JSX.Element => {
   const [search, setSearch] = useState("");
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+
   const rows = elements.map((element) => (
     <Table.Tr
       key={element.userId}
@@ -76,20 +81,22 @@ const UserManagement = (): JSX.Element => {
       <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
     </Table.Tr>
   ));
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value);
   };
 
   return (
     <>
-      <Paper withBorder bg={"#111111ff"} radius="md" mt={20}>
-        <Stack gap={0} ml={20} mt={20}>
-          <Title order={3} c={"white"}>
+      
+      <Paper withBorder bg={"#111111"} radius="md" mt="md" p="md">
+        <Stack gap="sm">
+          <Title order={3} c="white">
             User List
           </Title>
-          <Text c={"#A1A1AA"}>Manage user accounts and assign roles.</Text>
+          <Text c="#A1A1AA">Manage user accounts and assign roles.</Text>
           <TextInput
-            w={600}
+            w="100%"
             styles={{
               input: {
                 backgroundColor: "transparent",
@@ -97,68 +104,70 @@ const UserManagement = (): JSX.Element => {
                 border: "1px solid #27272A",
               },
             }}
-            placeholder="Search challans..."
+            placeholder="Search users..."
             value={search}
             onChange={handleSearchChange}
             radius="md"
             mb="md"
           />
         </Stack>
-        <Table
-          horizontalSpacing="lg"
-          verticalSpacing="lg"
-          highlightOnHover
-          c={"white"}
-          bg={"#111111ff"}
-        >
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>User ID</Table.Th>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Email</Table.Th>
-              <Table.Th>Role</Table.Th>
-              <Table.Th>Actions</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+
+        <div style={{ overflowX: "auto" }}>
+          <Table
+            horizontalSpacing="md"
+            verticalSpacing="md"
+            highlightOnHover
+            c="white"
+            bg="#111111"
+           
+          >
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>User ID</Table.Th>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>Email</Table.Th>
+                <Table.Th>Role</Table.Th>
+                <Table.Th>Actions</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </div>
       </Paper>
-      <Paper bg={"#09090B"} withBorder mt={30}>
-        <Title ml={20} order={3} c={"white"} mt={20}>
-          Add/Edit User
-        </Title>
-        <Text ml={20} c={"#A1A1AA"}>
-          Create a new user or modify an existing one.
-        </Text>
-        <Group justify="space-between" ml={20} mr={20}>
+
+    
+      <Paper bg="#09090B" withBorder mt="xl" p="md">
+        <Stack gap="xs">
+          <Title order={3} c="white">
+            Add/Edit User
+          </Title>
+          <Text c="#A1A1AA">Create a new user or modify an existing one.</Text>
+        </Stack>
+
+       
+        <Flex
+          direction={isMobile ? "column" : "row"}
+          gap="md"
+          mt="md"
+          mb="md"
+        >
           <TextInput
-            styles={{
-              input: {
-                backgroundColor: "#09090B",
-                border: "1px solid #27272A",
-              },
-            }}
+            flex={1}
             label="Name"
             placeholder="Enter name"
-            w={760}
+            styles={{
+              input: {
+                backgroundColor: "#09090B",
+                color: "#FFFFFF",
+                border: "1px solid #27272A",
+              },
+            }}
             c="white"
           />
           <TextInput
-            styles={{
-              input: {
-                backgroundColor: "#09090B",
-                color: "#FFFFFF",
-                border: "1px solid #27272A",
-              },
-            }}
+            flex={1}
             label="Email"
             placeholder="user@example.com"
-            w={760}
-            c="white"
-          />
-        </Group>
-        <Group justify="space-between" ml={20} mr={20}>
-          <PasswordInput
             styles={{
               input: {
                 backgroundColor: "#09090B",
@@ -166,12 +175,33 @@ const UserManagement = (): JSX.Element => {
                 border: "1px solid #27272A",
               },
             }}
+            c="white"
+          />
+        </Flex>
+
+        <Flex
+          direction={isMobile ? "column" : "row"}
+          gap="md"
+          mb="md"
+        >
+          <PasswordInput
+            flex={1}
             label="Password"
             placeholder="********"
-            w={760}
+            styles={{
+              input: {
+                backgroundColor: "#09090B",
+                color: "#FFFFFF",
+                border: "1px solid #27272A",
+              },
+            }}
             c="white"
           />
           <Select
+            flex={1}
+            label="Role"
+            placeholder="Select role"
+            data={["Admin", "Accountant", "Sales Operator", "Staff"]}
             styles={{
               input: {
                 backgroundColor: "#09090B",
@@ -179,14 +209,11 @@ const UserManagement = (): JSX.Element => {
                 border: "1px solid #27272A",
               },
             }}
-            label="Role"
-            placeholder="Select role"
-            data={["Admin", "Accountant", "Sales Operator", "Staff"]}
-            w={760}
             c="white"
           />
-        </Group>
-        <Group justify="flex-end" mt={20} mr={20} mb={20}>
+        </Flex>
+
+        <Group justify="flex-end" mt="md">
           <Button
             color="#09090B"
             style={{
@@ -195,7 +222,7 @@ const UserManagement = (): JSX.Element => {
           >
             Cancel
           </Button>
-          <Button color="#ffffff" c="black" w={110}>
+          <Button color="#ffffff" c="black">
             Save User
           </Button>
         </Group>

@@ -9,7 +9,9 @@ import {
   Stack,
   Text,
   TextInput,
+  ScrollArea,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import type { JSX } from "react";
 
 type Status = "in-stock" | "low-stock" | "out-of-stock";
@@ -52,7 +54,7 @@ const elements: Element[] = [
   {
     challanNo: "DC-001",
     Customer: "Acme Corp",
-    date: 2023 - 10 - 26,
+    date: 20231026,
     totalItem: 1,
     status: "low-stock",
     action: "...",
@@ -60,16 +62,15 @@ const elements: Element[] = [
   {
     challanNo: "DC-002",
     Customer: "Beta Solutions",
-    date: 2023 - 10 - 27,
+    date: 20231027,
     totalItem: 10,
-
     status: "in-stock",
     action: "...",
   },
   {
     challanNo: "DC-003",
     Customer: "Gamma Ltd",
-    date: 2023 - 10 - 28,
+    date: 20231028,
     totalItem: 0,
     status: "out-of-stock",
     action: "...",
@@ -77,7 +78,7 @@ const elements: Element[] = [
   {
     challanNo: "DC-004",
     Customer: "Delta Inc",
-    date: 2023 - 10 - 29,
+    date: 20231029,
     totalItem: 8,
     status: "in-stock",
     action: "...",
@@ -86,6 +87,8 @@ const elements: Element[] = [
 
 const DeliveryChallans = (): JSX.Element => {
   const [search, setSearch] = useState("");
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const rows = elements.map((element) => (
     <Table.Tr
       key={element.challanNo}
@@ -110,35 +113,46 @@ const DeliveryChallans = (): JSX.Element => {
       <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
     </Table.Tr>
   ));
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value);
   };
 
   return (
     <>
-      <Stack mt={20}>
-        <Group justify="space-between" mb="md">
-          <Stack gap={0} ml={20}>
+      <Stack mt={20} px={isMobile ? "md" : 40}>
+        <Group justify="space-between" mb="md" align="flex-start" wrap="wrap">
+          <Stack gap={0}>
             <Title order={2} c={"white"}>
               Delivery Challans
             </Title>
           </Stack>
-          <Group>
-            <Button color="#27272A">Export</Button>
-            <Button color="#ffffff" c="black" w={150}>
+
+          <Group gap="xs" mt={isMobile ? "sm" : 0} wrap="wrap">
+            <Button color="#27272A" fullWidth={isMobile}>
+              Export
+            </Button>
+            <Button
+              color="#ffffff"
+              c="black"
+              w={isMobile ? "100%" : 150}
+              fullWidth={isMobile}
+            >
               Create Challan
             </Button>
           </Group>
         </Group>
       </Stack>
-      <Paper withBorder bg={"#111111ff"} radius="md" mt={20}>
-        <Stack gap={0} ml={20} mt={20}>
+
+      <Paper withBorder bg={"#111111ff"} radius="md" mt={20} mx={isMobile ? "md" : 40} p="md">
+        <Stack gap="sm">
           <Title order={3} c={"white"}>
             Challan List
           </Title>
           <Text c={"#A1A1AA"}>Track your delivery challans.</Text>
+
           <TextInput
-            w={600}
+            w="100%"
             styles={{
               input: {
                 backgroundColor: "transparent",
@@ -150,28 +164,32 @@ const DeliveryChallans = (): JSX.Element => {
             value={search}
             onChange={handleSearchChange}
             radius="md"
-            mb="md"
           />
         </Stack>
-        <Table
-          horizontalSpacing="xl"
-          verticalSpacing="xl"
-          highlightOnHover
-          c={"white"}
-          bg={"#111111ff"}
-        >
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>ChallanNo</Table.Th>
-              <Table.Th>Customer</Table.Th>
-              <Table.Th>Date</Table.Th>
-              <Table.Th>TotalItem</Table.Th>
-              <Table.Th>Status</Table.Th>
-              <Table.Th>Actions</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+
+        <ScrollArea mt="md">
+          <Table
+            highlightOnHover
+            c={"white"}
+            bg={"#111111ff"}
+            verticalSpacing="md"
+            horizontalSpacing={"md"}
+            striped
+            withTableBorder
+          >
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>ChallanNo</Table.Th>
+                <Table.Th>Customer</Table.Th>
+                <Table.Th>Date</Table.Th>
+                <Table.Th>TotalItem</Table.Th>
+                <Table.Th>Status</Table.Th>
+                <Table.Th>Actions</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </ScrollArea>
       </Paper>
     </>
   );

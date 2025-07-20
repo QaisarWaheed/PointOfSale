@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Group, Title, Button, Table, Paper, Stack, Text } from "@mantine/core";
+import { Group, Title, Button, Table, Paper, Stack, Text, } from "@mantine/core";
+import { ScrollArea } from '@mantine/core';
+
 import type { JSX } from "react";
 import { SegmentedControl } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router";
-import { DateInput } from "@mantine/dates";
+import { useMediaQuery } from "@mantine/hooks";
 import CustomDateInput from "../../components/CustomDateInput";
 type Element = {
   date: string;
@@ -64,13 +66,17 @@ const table: Table[] = [
 const CashFlow = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const [value, setValue] = useState<"dailyReport" | "monthlyReport">(
     location.pathname === "/monthlyReport" ? "monthlyReport" : "dailyReport"
   );
+
   const handleButtonChange = (val: "dailyReport" | "monthlyReport") => {
     setValue(val);
     navigate(val === "dailyReport" ? "dailyReport" : "/monthlyReport");
   };
+
   const rows = elements.map((element) => (
     <Table.Tr
       key={element.date}
@@ -115,113 +121,128 @@ const CashFlow = (): JSX.Element => {
 
   return (
     <>
-      <Stack mt={20}>
-        <Group justify="space-between" mb="md">
-          <Stack gap={0} ml={20}>
-            <Title order={2} c={"white"}>
-              Cash Flow Management
-            </Title>
-          </Stack>
-          <Button color="#ffffff" c="black" w={150}>
-            Manual Entry
-          </Button>
-        </Group>
-      </Stack>
-      <Paper bg={"#09090B"} withBorder>
-        <Paper bg={"#09090B"}>
-          <Stack gap={0} ml={20} mt={20}>
-            <Title order={3} c={"white"}>
-              Cash Register
-            </Title>
-            <Text c={"#A1A1AA"} size="sm">
-              Current cash balance and recent transactions.
-            </Text>
-          </Stack>
+<Stack mt={20}>
+  <Group
+    justify="space-between"
+    align={isMobile ? "stretch" : "center"}
+    mb="md"
+    wrap="wrap"
+    gap="sm"
+  >
+    <Stack gap={0} ml={isMobile ? 0 : 20}>
+      <Title order={2} c="white">Cash Flow Management</Title>
+    </Stack>
+    <Button color="#ffffff" c="black" w={isMobile ? "100%" : 150}>
+      Manual Entry
+    </Button>
+  </Group>
+</Stack>
 
-          <Stack mt={20} ml={20}>
-            <Title order={2} c={"white"}>
-              Current Cash Balance:
-            </Title>
-          </Stack>
-          <Table
-            horizontalSpacing="xl"
-            verticalSpacing="md"
-            highlightOnHover
-            c={"white"}
-            bg={"#09090B"}
-          >
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Date</Table.Th>
-                <Table.Th>Description</Table.Th>
-                <Table.Th>Type</Table.Th>
-                <Table.Th>Amount</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-          </Table>
-        </Paper>
-      </Paper>
-      <Group justify="Space-between" mt={35}>
-        <SegmentedControl
-          w={300}
-          radius={5}
-          mb={5}
-          styles={{
-            root: {
-              backgroundColor: "#27272A",
-              border: "1px solid #374151",
-            },
-            label: {
-              color: "#ffffff",
-            },
-            indicator: {
-              backgroundColor: "#111111",
-            },
-          }}
-          data={[
-            { label: "Daily Report", value: "dailyReport" },
-            { label: "Monthly Report", value: "monthlyReport" },
-          ]}
-        />
-        <Group bg={"red"}>
-          <CustomDateInput mt={0} />
-          <Button
-            w={100}
-            color="#09090B"
-            style={{
-              border: "1px solid gray",
-            }}
-          >
-            Filter
-          </Button>
-        </Group>
-      </Group>
-      <Paper withBorder bg={"#09090B"} radius="md" mt={20}>
-        <Stack gap={0} ml={20} mt={20}>
-          <Title order={3} c={"white"}>
-            Daily Cash Flow Summary
-          </Title>
-          <Text c={"#A1A1AA"}>Net cash movement per day.</Text>
-        </Stack>
-        <Table
-          horizontalSpacing="xl"
-          verticalSpacing="md"
-          highlightOnHover
-          c={"white"}
-          bg={"#09090B"}
-        >
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Date</Table.Th>
-              <Table.Th>Total Inflow</Table.Th>
-              <Table.Th>Total Outflow</Table.Th>
-              <Table.Th>Net Flow</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{row}</Table.Tbody>
-        </Table>
-      </Paper>
+
+         <Paper bg="#09090B" withBorder>
+  <Paper bg="#09090B">
+    <Stack gap={0} ml={20} mt={20}>
+      <Title order={3} c="white">Cash Register</Title>
+      <Text c="#A1A1AA" size="sm">Current cash balance and recent transactions.</Text>
+    </Stack>
+
+    <Stack mt={20} ml={20}>
+      <Title order={2} c="white">Current Cash Balance:</Title>
+    </Stack>
+
+    <ScrollArea type="auto">
+      <Table
+        horizontalSpacing="md"
+        verticalSpacing="md"
+        highlightOnHover
+        c="white"
+        bg="#09090B"
+        miw={isMobile ? 600 : undefined}
+      >
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Date</Table.Th>
+            <Table.Th>Description</Table.Th>
+            <Table.Th>Type</Table.Th>
+            <Table.Th>Amount</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
+    </ScrollArea>
+  </Paper>
+</Paper>
+
+<Group
+  justify="space-between"
+  mt={35}
+  wrap="wrap"
+  gap="md"
+  align={isMobile ? "stretch" : "center"}
+>
+  <SegmentedControl
+    value={value}
+    onChange={(val: any) => handleButtonChange(val)}
+    w={isMobile ? "100%" : 300}
+    radius={5}
+    mb={5}
+    styles={{
+      root: {
+        backgroundColor: "#27272A",
+        border: "1px solid #374151",
+      },
+      label: {
+        color: "#ffffff",
+      },
+      indicator: {
+        backgroundColor: "#111111",
+      },
+    }}
+    data={[
+      { label: "Daily Report", value: "dailyReport" },
+      { label: "Monthly Report", value: "monthlyReport" },
+    ]}
+  />
+
+  <Group wrap="wrap" gap="sm">
+    <CustomDateInput mt={0} />
+    <Button
+      w={isMobile ? "100%" : 100}
+      color="#09090B"
+      style={{ border: "1px solid gray" }}
+    >
+      Filter
+    </Button>
+  </Group>
+</Group>
+<Paper withBorder bg="#09090B" radius="md" mt={20}>
+  <Stack gap={0} ml={20} mt={20}>
+    <Title order={3} c="white">Daily Cash Flow Summary</Title>
+    <Text c="#A1A1AA">Net cash movement per day.</Text>
+  </Stack>
+
+  <ScrollArea type="auto">
+    <Table
+      horizontalSpacing="md"
+      verticalSpacing="md"
+      highlightOnHover
+      c="white"
+      bg="#09090B"
+      miw={isMobile ? 600 : undefined}
+    >
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>Date</Table.Th>
+          <Table.Th>Total Inflow</Table.Th>
+          <Table.Th>Total Outflow</Table.Th>
+          <Table.Th>Net Flow</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>{row}</Table.Tbody>
+    </Table>
+  </ScrollArea>
+</Paper>
+
     </>
   );
 };

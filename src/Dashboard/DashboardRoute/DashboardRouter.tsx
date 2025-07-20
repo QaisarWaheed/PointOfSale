@@ -10,6 +10,7 @@ import CashFlow from "../pages/CashFlow";
 import Report from "../pages/Report";
 import UserManagement from "../pages/Usermanagement";
 import PointOfSale from "../pages/PointOfSale";
+import AddProduct from "../pages/AddProduct";
 const routes: RouteObject[] = [
   {
     path: "/dashboard",
@@ -54,6 +55,10 @@ const routes: RouteObject[] = [
       {
         path: "point-of-sale",
         element: <PointOfSale />,
+      },
+      {
+        path: "add-product",
+        element: <AddProduct />,
       },
     ],
   },
