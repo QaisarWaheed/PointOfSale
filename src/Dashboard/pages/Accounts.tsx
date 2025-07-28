@@ -10,9 +10,17 @@ import {
   Text,
   TextInput,
   Box,
+  Menu,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { JSX } from "react";
+import {
+  IconCirclePlus,
+  IconDots,
+  IconEdit,
+  IconSearch,
+  IconTrash,
+} from "@tabler/icons-react";
 
 type Status = "in-stock" | "low-stock" | "out-of-stock";
 
@@ -56,7 +64,7 @@ const elements: Element[] = [
     name: "Acme Corp",
     type: "Customer",
     status: "low-stock",
-    lastActivity: 2023 - 11 - 1,
+    lastActivity: 20231101,
     action: "...",
   },
   {
@@ -64,7 +72,7 @@ const elements: Element[] = [
     name: "Supplier A",
     type: "Vendor",
     status: "in-stock",
-    lastActivity: 2023 - 10 - 29,
+    lastActivity: 20231029,
     action: "...",
   },
   {
@@ -72,7 +80,7 @@ const elements: Element[] = [
     name: "Beta Solutions",
     type: "Customer",
     status: "out-of-stock",
-    lastActivity: 2023 - 10 - 27,
+    lastActivity: 20231027,
     action: "...",
   },
   {
@@ -80,7 +88,7 @@ const elements: Element[] = [
     name: "Manufacturer X",
     type: "Vendor",
     status: "in-stock",
-    lastActivity: 2023 - 10 - 25,
+    lastActivity: 20231025,
     action: "...",
   },
 ];
@@ -97,20 +105,43 @@ const Accounts = (): JSX.Element => {
         transition: "background-color 0.2s",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#656b74ff";
+        e.currentTarget.style.backgroundColor = "#27272A";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.backgroundColor = "transparent";
       }}
     >
-      <Table.Td c={"#A1A1AA"}>{element.accountId}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.name}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.type}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>
+      <Table.Td c="#A1A1AA">{element.accountId}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.name}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.type}</Table.Td>
+      <Table.Td c="#A1A1AA">
         <StatusBadge status={element.status} />
       </Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.lastActivity}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.lastActivity}</Table.Td>
+      <Table.Td c="#A1A1AA">
+        <Menu shadow="md" width={150} position="bottom-end">
+          <Menu.Target>
+            <Button variant="subtle" color="gray" px={8}>
+              <IconDots size={18} />
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconEdit size={16} />}
+              onClick={() => alert(`Edit ${element.accountId}`)}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconTrash size={16} />}
+              color="red"
+              onClick={() => alert(`Delete ${element.accountId}`)}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Table.Td>
     </Table.Tr>
   ));
 
@@ -123,27 +154,41 @@ const Accounts = (): JSX.Element => {
       <Stack mt={20}>
         <Group justify="space-between" mb="md" wrap="wrap" px="md">
           <Stack gap={0}>
-            <Title order={2} c={"white"}>
-              Company Accounts
+            <Title order={2} c="white">
+              Company / Customer / Vendor Accounts
             </Title>
           </Stack>
           <Group gap="sm" mt={isMobile ? "md" : 0}>
             <Button color="#27272A">Export</Button>
-            <Button color="#ffffff" c="black" w={150}>
+            <Button
+              color="#ffffff"
+              c="black"
+              w={150}
+              leftSection={<IconCirclePlus size={18} />}
+            >
               Add Account
             </Button>
           </Group>
         </Group>
       </Stack>
 
-      <Paper withBorder bg={"#111111ff"} radius="md" mt={20} px="md">
+      <Paper
+        style={{
+          border: "1px solid #27272A",
+        }}
+        bg="#111111ff"
+        radius="md"
+        mt={20}
+        px="md"
+      >
         <Stack gap={0} mt={20}>
-          <Title order={3} c={"white"}>
+          <Title order={3} c="white">
             Account List
           </Title>
-          <Text c={"#A1A1AA"}>Manage your customer and vendor accounts.</Text>
+          <Text c="#A1A1AA">Manage your customer and vendor accounts.</Text>
 
           <TextInput
+            mt={5}
             w={isMobile ? "100%" : 600}
             styles={{
               input: {
@@ -152,23 +197,23 @@ const Accounts = (): JSX.Element => {
                 border: "1px solid #27272A",
               },
             }}
-            placeholder="Search challans..."
+            placeholder="Search accounts..."
             value={search}
             onChange={handleSearchChange}
             radius="md"
             mb="md"
+            leftSection={<IconSearch size={18} />}
           />
         </Stack>
 
-        {/* Make table scrollable on small screens */}
         <Box style={{ overflowX: "auto" }}>
           <Table
             horizontalSpacing="md"
             verticalSpacing="md"
             highlightOnHover
-            c={"white"}
-            bg={"#111111ff"}
-            miw={isMobile ? 600 : "auto"} // Set a min width for horizontal scroll
+            c="white"
+            bg="#111111ff"
+            miw={isMobile ? 600 : "auto"}
           >
             <Table.Thead>
               <Table.Tr>

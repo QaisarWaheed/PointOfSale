@@ -12,16 +12,15 @@ const CustomDateInput = (props: InputProps) => {
       styles={{
         input: {
           backgroundColor: "#09090B",
-          color: "#FFFFFF",
+          color: "#fff",
           border: "1px solid #27272A",
         },
       }}
       c="white"
       w={360}
       placeholder="Date"
-    />
+    ></Input>
   );
 };
 
 export default CustomDateInput;
-

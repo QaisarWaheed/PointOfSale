@@ -10,9 +10,18 @@ import {
   Text,
   TextInput,
   ScrollArea,
+  Menu,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { JSX } from "react";
+import {
+  IconCirclePlus,
+  IconDots,
+  IconEdit,
+  IconSearch,
+  IconTrash,
+} from "@tabler/icons-react";
+import { useNavigate } from "react-router";
 
 type Status = "in-stock" | "low-stock" | "out-of-stock";
 
@@ -87,6 +96,7 @@ const elements: Element[] = [
 
 const DeliveryChallans = (): JSX.Element => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const rows = elements.map((element) => (
@@ -94,10 +104,10 @@ const DeliveryChallans = (): JSX.Element => {
       key={element.challanNo}
       style={{
         cursor: "pointer",
-        transition: "background-color 0.2s",
+        transition: "background-color 0.2s ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#656b74ff";
+        e.currentTarget.style.backgroundColor = "#27272A";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.backgroundColor = "transparent";
@@ -110,7 +120,30 @@ const DeliveryChallans = (): JSX.Element => {
       <Table.Td c={"#A1A1AA"}>
         <StatusBadge status={element.status} />
       </Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
+      <Table.Td c={"#A1A1AA"}>
+        <Menu shadow="md" width={150} position="bottom-end">
+          <Menu.Target>
+            <Button variant="subtle" color="gray" px={8}>
+              <IconDots size={18} />
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconEdit size={16} />}
+              onClick={() => alert(`Edit ${element.challanNo}`)}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconTrash size={16} />}
+              color="red"
+              onClick={() => alert(`Delete ${element.challanNo}`)}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Table.Td>
     </Table.Tr>
   ));
 
@@ -120,7 +153,7 @@ const DeliveryChallans = (): JSX.Element => {
 
   return (
     <>
-      <Stack mt={20} px={isMobile ? "md" : 40}>
+      <Stack mt={20} px="md">
         <Group justify="space-between" mb="md" align="flex-start" wrap="wrap">
           <Stack gap={0}>
             <Title order={2} c={"white"}>
@@ -137,14 +170,24 @@ const DeliveryChallans = (): JSX.Element => {
               c="black"
               w={isMobile ? "100%" : 150}
               fullWidth={isMobile}
+              onClick={() => navigate("/dashboard/create-challan")}
+              leftSection={<IconCirclePlus size={18} />}
             >
               Create Challan
             </Button>
           </Group>
         </Group>
       </Stack>
-
-      <Paper withBorder bg={"#111111ff"} radius="md" mt={20} mx={isMobile ? "md" : 40} p="md">
+      <Paper
+        style={{
+          border: "1px solid #27272A",
+        }}
+        bg="#111111ff"
+        radius="md"
+        mt={20}
+        px="md"
+        py="lg"
+      >
         <Stack gap="sm">
           <Title order={3} c={"white"}>
             Challan List
@@ -164,6 +207,7 @@ const DeliveryChallans = (): JSX.Element => {
             value={search}
             onChange={handleSearchChange}
             radius="md"
+            leftSection={<IconSearch size={18} />}
           />
         </Stack>
 
@@ -174,8 +218,6 @@ const DeliveryChallans = (): JSX.Element => {
             bg={"#111111ff"}
             verticalSpacing="md"
             horizontalSpacing={"md"}
-            striped
-            withTableBorder
           >
             <Table.Thead>
               <Table.Tr>

@@ -10,10 +10,18 @@ import {
   Text,
   TextInput,
   ScrollArea,
+  Menu,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useNavigate, useLocation } from "react-router";
 import { SegmentedControl } from "@mantine/core";
+import {
+  IconCirclePlus,
+  IconSearch,
+  IconDots,
+  IconEdit,
+  IconTrash,
+} from "@tabler/icons-react";
 
 type Status = "in-stock" | "low-stock" | "out-of-stock";
 
@@ -33,7 +41,11 @@ const StatusBadge = ({ status }: { status: Status }) => {
     case "low-stock":
       return <Badge color="red">Pending</Badge>;
     case "out-of-stock":
-      return <Badge color="gray" variant="outline">Cancelled</Badge>;
+      return (
+        <Badge color="gray" variant="outline">
+          Cancelled
+        </Badge>
+      );
     default:
       return null;
   }
@@ -43,7 +55,7 @@ const elements: Element[] = [
   {
     invoiceNo: "SI-001",
     customer: "Acme Corp",
-    date: 2023 - 10 - 26,
+    date: 20231026,
     amount: "$1500.00",
     status: "low-stock",
     action: "...",
@@ -51,7 +63,7 @@ const elements: Element[] = [
   {
     invoiceNo: "SI-002",
     customer: "Beta Solutions",
-    date: 2023 - 10 - 27,
+    date: 20231027,
     amount: "$2300.00",
     status: "in-stock",
     action: "...",
@@ -59,7 +71,7 @@ const elements: Element[] = [
   {
     invoiceNo: "SI-003",
     customer: "Gamma Ltd",
-    date: 2023 - 10 - 28,
+    date: 20231028,
     amount: "$800.00",
     status: "out-of-stock",
     action: "...",
@@ -76,9 +88,10 @@ const Invoicing = () => {
     location.pathname === "/purchase" ? "purchase" : "sale"
   );
 
-  const handleButtonChange = (val: "sale" | "purchase") => {
-    setValue(val);
-    navigate(val === "sale" ? "sale" : "/purchase");
+  const handleButtonChange = (val: string) => {
+    const typedVal = val as "sale" | "purchase";
+    setValue(typedVal);
+    navigate(typedVal === "sale" ? "sale" : "/purchase");
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,27 +106,55 @@ const Invoicing = () => {
         transition: "background-color 0.2s",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#656b74ff";
+        e.currentTarget.style.backgroundColor = "#27272A";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.backgroundColor = "transparent";
       }}
     >
-      <Table.Td c={"#A1A1AA"}>{element.invoiceNo}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.customer}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.date}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.amount}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>
+      <Table.Td c="#A1A1AA">{element.invoiceNo}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.customer}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.date}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.amount}</Table.Td>
+      <Table.Td c="#A1A1AA">
         <StatusBadge status={element.status} />
       </Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
+      <Table.Td c="#A1A1AA">
+        <Menu shadow="md" width={150} position="bottom-end">
+          <Menu.Target>
+            <Button variant="subtle" color="gray" px={8}>
+              <IconDots size={18} />
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconEdit size={16} />}
+              onClick={() => alert(`Edit ${element.invoiceNo}`)}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconTrash size={16} />}
+              color="red"
+              onClick={() => alert(`Delete ${element.invoiceNo}`)}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Table.Td>
     </Table.Tr>
   ));
 
   return (
     <>
       <Stack mt={20}>
-        <Group justify="space-between" align={isMobile ? "start" : "center"} mb="md" wrap="wrap">
+        <Group
+          justify="space-between"
+          align={isMobile ? "start" : "center"}
+          mb="md"
+          wrap="wrap"
+        >
           <Stack gap={0} ml={isMobile ? 0 : 20}>
             <Title order={2} c="white">
               Invoicing
@@ -123,7 +164,14 @@ const Invoicing = () => {
             <Button color="#27272A" size="sm">
               Export
             </Button>
-            <Button color="#ffffff" c="black" size="sm" w={isMobile ? "100%" : 150}>
+            <Button
+              color="#ffffff"
+              c="black"
+              size="sm"
+              w={isMobile ? "100%" : 150}
+              onClick={() => navigate("/dashboard/create-invoice")}
+              leftSection={<IconCirclePlus size={18} />}
+            >
               Create Invoice
             </Button>
           </Group>
@@ -138,7 +186,6 @@ const Invoicing = () => {
           styles={{
             root: {
               backgroundColor: "#27272A",
-              border: "1px solid #374151",
             },
             label: {
               color: "#ffffff",
@@ -164,14 +211,23 @@ const Invoicing = () => {
               border: "1px solid #27272A",
             },
           }}
-          placeholder="Search challans..."
+          placeholder="Search invoices..."
           value={search}
           onChange={handleSearchChange}
           radius="md"
+          leftSection={<IconSearch size={18} />}
         />
       </Group>
 
-      <Paper withBorder bg={"#111111"} radius="md" mt={20} p="sm">
+      <Paper
+        style={{
+          border: "1px solid #27272A",
+        }}
+        bg="#111111"
+        radius="md"
+        mt={20}
+        p="sm"
+      >
         <Stack gap={0} ml={20} mt={20}>
           <Title order={3} c="white">
             Sales Invoices
@@ -179,7 +235,6 @@ const Invoicing = () => {
           <Text c="#A1A1AA">Manage your sales invoices.</Text>
         </Stack>
 
-        {/* Responsive Scrollable Table */}
         <ScrollArea type="auto" scrollbars="xy" mt={20}>
           <Table
             horizontalSpacing="md"

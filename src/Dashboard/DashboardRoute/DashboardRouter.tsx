@@ -11,6 +11,8 @@ import Report from "../pages/Report";
 import UserManagement from "../pages/Usermanagement";
 import PointOfSale from "../pages/PointOfSale";
 import AddProduct from "../pages/AddProduct";
+import CreateDeliveryChallan from "../pages/CreateDeliveryChallan";
+import CreateInvoice from "../pages/CreateInvoice";
 const routes: RouteObject[] = [
   {
     path: "/dashboard",
@@ -29,7 +31,7 @@ const routes: RouteObject[] = [
         element: <DeliveryChallans />,
       },
       {
-        path: "invoicing",
+        path: "invoice",
         element: <Invoicing />,
       },
       {
@@ -59,6 +61,14 @@ const routes: RouteObject[] = [
       {
         path: "add-product",
         element: <AddProduct />,
+      },
+      {
+        path: "create-challan",
+        element: <CreateDeliveryChallan />,
+      },
+      {
+        path: "create-invoice",
+        element: <CreateInvoice />,
       },
     ],
   },

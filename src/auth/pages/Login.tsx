@@ -3,8 +3,24 @@ import { TextInput, Button, Card, Title, Stack, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { PasswordInput } from "@mantine/core";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router";
 const Login = () => {
+  const { login } = useAuth();
   const [visible, { toggle }] = useDisclosure(false);
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const handleLogin = async () => {
+    const res = await axios.post("/api/login", { email, password });
+    if (res.status !== 200) {
+      login({ id: "1", email, name: "User" });
+      navigate("/dashboard");
+    } else {
+      notifications.show({ message: "Login failed", color: "red" });
+    }
+  };
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { email: "" },
@@ -44,19 +60,27 @@ const Login = () => {
             </Stack>
 
             <TextInput
+              value={email}
+              onChange={(event) => setEmail(event.currentTarget.value)}
               w={"350"}
               label="Email"
               placeholder="Email"
-              key={form.key("email")}
-              {...form.getInputProps("email")}
             />
             <PasswordInput
+              value={password}
+              onChange={(event) => setPassword(event.currentTarget.value)}
               label="Password"
               placeholder="Enter your password"
               visible={visible}
               onVisibilityChange={toggle}
             />
-            <Button bg="#000000ff" fullWidth type="submit" mt="sm">
+            <Button
+              bg="#000000ff"
+              fullWidth
+              type="submit"
+              mt="sm"
+              onClick={handleLogin}
+            >
               Login
             </Button>
           </Stack>

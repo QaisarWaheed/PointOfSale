@@ -11,10 +11,19 @@ import {
   Select,
   NumberInput,
   Grid,
+  Menu,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { JSX } from "react";
 import CustomDateInput from "../../components/CustomDateInput";
+import {
+  IconCirclePlus,
+  IconSearch,
+  IconDots,
+  IconEdit,
+  IconTrash,
+  IconFileText,
+} from "@tabler/icons-react";
 
 type Element = {
   expenseId: string;
@@ -30,7 +39,7 @@ const elements: Element[] = [
     expenseId: "E-001",
     person: "Acme Corp",
     category: "Office Supplies",
-    date: 2023 - 10 - 26,
+    date: 20231026,
     amount: "$150.00",
     action: "...",
   },
@@ -38,7 +47,7 @@ const elements: Element[] = [
     expenseId: "E-002",
     person: "Beta Solutions",
     category: "Travel",
-    date: 2023 - 10 - 27,
+    date: 20231027,
     amount: "$300.00",
     action: "...",
   },
@@ -46,7 +55,7 @@ const elements: Element[] = [
     expenseId: "E-003",
     person: "Gamma Ltd",
     category: "Utilities",
-    date: 2023 - 10 - 28,
+    date: 20231028,
     amount: "$80.00",
     action: "...",
   },
@@ -68,18 +77,41 @@ const Expenses = (): JSX.Element => {
         transition: "background-color 0.2s",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#656b74ff";
+        e.currentTarget.style.backgroundColor = "#27272A";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.backgroundColor = "transparent";
       }}
     >
-      <Table.Td c={"#A1A1AA"}>{element.expenseId}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.person}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.category}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.date}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.amount}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.expenseId}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.person}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.category}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.date}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.amount}</Table.Td>
+      <Table.Td c="#A1A1AA">
+        <Menu shadow="md" width={150} position="bottom-end">
+          <Menu.Target>
+            <Button variant="subtle" color="gray" px={8}>
+              <IconDots size={18} />
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconEdit size={16} />}
+              onClick={() => alert(`Edit ${element.expenseId}`)}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconTrash size={16} />}
+              color="red"
+              onClick={() => alert(`Delete ${element.expenseId}`)}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Table.Td>
     </Table.Tr>
   ));
 
@@ -91,21 +123,49 @@ const Expenses = (): JSX.Element => {
             Staff & Office Expenses
           </Title>
           <Group gap="xs" wrap="wrap">
-            <Button w={140} color="#1C1B22" style={{ border: "1px solid grey" }}>
+            <Button
+              variant="subtle"
+              w={140}
+              color="white"
+              style={{
+                border: "1px solid #262629",
+              }}
+              leftSection={<IconFileText size={18} />}
+            >
               Export PDF
             </Button>
-            <Button w={140} color="#1C1B22" style={{ border: "1px solid grey" }}>
+            <Button
+              variant="subtle"
+              w={140}
+              color="white"
+              style={{
+                border: "1px solid #262629",
+              }}
+              leftSection={<IconFileText size={18} />}
+            >
               Export Excel
             </Button>
-            <Button color="white" c="black" w={140}>
+            <Button
+              color="#ffffff"
+              c="black"
+              w={150}
+              leftSection={<IconCirclePlus size={16} />}
+            >
               Add Expense
             </Button>
           </Group>
         </Group>
       </Stack>
 
-      
-      <Paper bg="#09090B" withBorder radius="md" p={isSmallScreen ? 10 : 20}>
+      <Paper
+        bg="#09090B"
+        withBorder
+        radius="md"
+        p={isSmallScreen ? 10 : 20}
+        style={{
+          border: "1px solid #27272A",
+        }}
+      >
         <Stack>
           <Title order={3} c="white">
             Add New Expense
@@ -115,7 +175,7 @@ const Expenses = (): JSX.Element => {
           </Text>
 
           <Grid gutter={isSmallScreen ? "sm" : "md"}>
-            <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+            <Grid.Col span={{ base: 11, sm: 5, md: 3 }}>
               <TextInput
                 label="Person"
                 placeholder="Enter name"
@@ -126,10 +186,11 @@ const Expenses = (): JSX.Element => {
                     border: "1px solid #27272A",
                   },
                 }}
+                c="white"
               />
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+            <Grid.Col span={{ base: 11, sm: 5, md: 3 }}>
               <Select
                 label="Category"
                 placeholder="Select Category"
@@ -141,14 +202,15 @@ const Expenses = (): JSX.Element => {
                     border: "1px solid #27272A",
                   },
                 }}
+                c="white"
               />
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
-              <CustomDateInput mt={23} />
+            <Grid.Col span={{ base: 11, sm: 5, md: 3 }}>
+              <CustomDateInput mt={25} />
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+            <Grid.Col span={{ base: 11, sm: 5, md: 3 }}>
               <NumberInput
                 label="Amount"
                 placeholder="0.00"
@@ -159,69 +221,77 @@ const Expenses = (): JSX.Element => {
                     border: "1px solid #27272A",
                   },
                 }}
+                c="white"
               />
             </Grid.Col>
           </Grid>
 
           <Group justify="flex-end" mt={10}>
-            <Button color="white" c="black" w={140}>
+            <Button color="#ffffff" c="black" w={140}>
               Submit Expense
             </Button>
           </Group>
         </Stack>
       </Paper>
 
-      
-      <Paper withBorder bg={"#111111ff"} radius="md" mt={20} p="md">
-  <Stack gap={0}>
-    <Title order={3} c={"white"} ml={4}>
-      Expense Report
-    </Title>
-    <Text c={"#A1A1AA"} ml={4}>
-      Overview of all recorded expenses.
-    </Text>
-
-    <TextInput
-      w="100%"
-      styles={{
-        input: {
-          backgroundColor: "transparent",
-          color: "#FFFFFF",
+      <Paper
+        style={{
           border: "1px solid #27272A",
-        },
-      }}
-      placeholder="Search challans..."
-      value={search}
-      onChange={handleSearchChange}
-      radius="md"
-      mb="md"
-    />
-
-    <div style={{ overflowX: "auto" }}>
-      <Table
-        horizontalSpacing="md"
-        verticalSpacing="md"
-        highlightOnHover
-        c="white"
-        bg="#111111ff"
-        style={{ minWidth: "800px" }} 
+        }}
+        bg="#09090B"
+        radius="md"
+        mt={20}
+        p="md"
       >
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Expense ID</Table.Th>
-            <Table.Th>Person</Table.Th>
-            <Table.Th>Category</Table.Th>
-            <Table.Th>Date</Table.Th>
-            <Table.Th>Amount</Table.Th>
-            <Table.Th>Actions</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    </div>
-  </Stack>
-</Paper>
+        <Stack gap={0}>
+          <Title order={3} c="white" ml={4}>
+            Expense Report
+          </Title>
+          <Text c="#A1A1AA" ml={4}>
+            Overview of all recorded expenses.
+          </Text>
 
+          <TextInput
+            w="100%"
+            styles={{
+              input: {
+                backgroundColor: "transparent",
+                color: "#FFFFFF",
+                border: "1px solid #27272A",
+              },
+            }}
+            placeholder="Search expenses..."
+            value={search}
+            onChange={handleSearchChange}
+            radius="md"
+            mb="md"
+            leftSection={<IconSearch size={18} />}
+          />
+
+          <div style={{ overflowX: "auto" }}>
+            <Table
+              horizontalSpacing="md"
+              verticalSpacing="md"
+              highlightOnHover
+              c="white"
+              bg="#09090B"
+              style={{ minWidth: "800px" }}
+            >
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Expense ID</Table.Th>
+                  <Table.Th>Person</Table.Th>
+                  <Table.Th>Category</Table.Th>
+                  <Table.Th>Date</Table.Th>
+                  <Table.Th>Amount</Table.Th>
+                  <Table.Th>Actions</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>{rows}</Table.Tbody>
+            </Table>
+          </div>
+        </Stack>
+      </Paper>
     </>
   );
 };

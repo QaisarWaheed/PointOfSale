@@ -9,9 +9,18 @@ import {
   Stack,
   Text,
   TextInput,
+  Menu,
 } from "@mantine/core";
 import type { JSX } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import {
+  IconCirclePlus,
+  IconSearch,
+  IconDots,
+  IconEdit,
+  IconTrash,
+} from "@tabler/icons-react";
+
 type Status = "in-stock" | "low-stock" | "out-of-stock";
 
 type Element = {
@@ -22,7 +31,6 @@ type Element = {
   price: string;
   supplier: string;
   status: Status;
-  action: string;
 };
 
 const StatusBadge = ({ status }: { status: Status }) => {
@@ -32,7 +40,11 @@ const StatusBadge = ({ status }: { status: Status }) => {
     case "low-stock":
       return <Badge color="red">Low Stock</Badge>;
     case "out-of-stock":
-      return <Badge color="gray" variant="outline">Out of Stock</Badge>;
+      return (
+        <Badge color="gray" variant="outline">
+          Out of Stock
+        </Badge>
+      );
     default:
       return null;
   }
@@ -47,7 +59,6 @@ const elements: Element[] = [
     price: "$1200",
     supplier: "TechCorp",
     status: "low-stock",
-    action: "...",
   },
   {
     name: "Wireless Mouse",
@@ -57,7 +68,6 @@ const elements: Element[] = [
     price: "$25",
     supplier: "AccessoryHub",
     status: "in-stock",
-    action: "...",
   },
   {
     name: "Mechanical Keyboard",
@@ -67,7 +77,6 @@ const elements: Element[] = [
     price: "$90",
     supplier: "KeyMasters",
     status: "out-of-stock",
-    action: "...",
   },
   {
     name: "USB-C Hub",
@@ -77,7 +86,6 @@ const elements: Element[] = [
     price: "$40",
     supplier: "ConnectAll",
     status: "in-stock",
-    action: "...",
   },
 ];
 
@@ -94,10 +102,10 @@ const Inventory = (): JSX.Element => {
       key={element.name}
       style={{
         cursor: "pointer",
-        transition: "background-color 0.2s",
+        transition: "background-color 0.3s ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#656b74ff";
+        e.currentTarget.style.backgroundColor = "#27272A";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.backgroundColor = "transparent";
@@ -109,8 +117,33 @@ const Inventory = (): JSX.Element => {
       <Table.Td c="#A1A1AA">{element.stock}</Table.Td>
       <Table.Td c="#A1A1AA">{element.price}</Table.Td>
       <Table.Td c="#A1A1AA">{element.supplier}</Table.Td>
-      <Table.Td c="#A1A1AA"><StatusBadge status={element.status} /></Table.Td>
-      <Table.Td c="#A1A1AA">{element.action}</Table.Td>
+      <Table.Td c="#A1A1AA">
+        <StatusBadge status={element.status} />
+      </Table.Td>
+      <Table.Td c="#A1A1AA">
+        <Menu shadow="md" width={150} position="bottom-end">
+          <Menu.Target>
+            <Button variant="subtle" color="gray" px={8}>
+              <IconDots size={18} />
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconEdit size={16} />}
+              onClick={() => alert(`Edit ${element.name}`)}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconTrash size={16} />}
+              color="red"
+              onClick={() => alert(`Delete ${element.name}`)}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Table.Td>
     </Table.Tr>
   ));
 
@@ -125,16 +158,33 @@ const Inventory = (): JSX.Element => {
           </Stack>
           <Group>
             <Button color="#27272A">Export</Button>
-            <Button onClick={() => navigate('/dashboard/inventory/add-product')} color="#ffffff" c="black" w={150}>
+            <Button
+              onClick={() => navigate("/dashboard/add-product")}
+              color="#ffffff"
+              c="black"
+              w={150}
+              leftSection={<IconCirclePlus size={18} />}
+            >
               Add Product
             </Button>
           </Group>
         </Group>
       </Stack>
 
-      <Paper withBorder bg="#111111ff" radius="md" mt={20} px="md" py="lg">
+      <Paper
+        style={{
+          border: "1px solid #27272A",
+        }}
+        bg="#111111ff"
+        radius="md"
+        mt={20}
+        px="md"
+        py="lg"
+      >
         <Stack gap="xs">
-          <Title order={3} c="white">Product List</Title>
+          <Title order={3} c="white">
+            Product List
+          </Title>
           <Text c="#A1A1AA">Manage your products and their stock levels.</Text>
           <TextInput
             w="100%"
@@ -150,10 +200,10 @@ const Inventory = (): JSX.Element => {
             onChange={(e) => setSearch(e.currentTarget.value)}
             radius="md"
             mb="md"
+            leftSection={<IconSearch size={18} />}
           />
         </Stack>
 
-        
         <div style={{ overflowX: "auto" }}>
           <Table
             horizontalSpacing="md"
@@ -161,7 +211,7 @@ const Inventory = (): JSX.Element => {
             highlightOnHover
             c="white"
             bg="#111111ff"
-            style={{ minWidth: "850px" }} 
+            style={{ minWidth: "850px" }}
           >
             <Table.Thead>
               <Table.Tr>

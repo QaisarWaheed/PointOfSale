@@ -10,14 +10,20 @@ import {
   Flex,
   SegmentedControl,
 } from "@mantine/core";
+import CustomDateInput from "../../components/CustomDateInput";
+import { IconFileText } from "@tabler/icons-react";
 
 const Report = () => {
   const [value, setValue] = useState("react");
 
   return (
     <Stack gap="lg" mt={20}>
-      {/* Top header section */}
-      <Flex direction={{ base: "column", sm: "row" }} justify="space-between" wrap="wrap" gap="md">
+      <Flex
+        direction={{ base: "column", sm: "row" }}
+        justify="space-between"
+        wrap="wrap"
+        gap="md"
+      >
         <Title order={3} c="white">
           Report Center
         </Title>
@@ -25,22 +31,32 @@ const Report = () => {
           <Button
             w={150}
             color="#09090B"
-            style={{ border: "1px solid grey" }}
+            style={{
+              border: "1px solid #27272A",
+            }}
+            leftSection={<IconFileText size={18} />}
           >
             Export PDF
           </Button>
           <Button
             w={150}
             color="#09090B"
-            style={{ border: "1px solid grey" }}
+            style={{
+              border: "1px solid #27272A",
+            }}
+            leftSection={<IconFileText size={18} />}
           >
             Export Excel
           </Button>
         </Group>
       </Flex>
 
-      {/* Filter section */}
-      <Flex direction={{ base: "column", md: "row" }} justify="space-between" wrap="wrap" gap="md">
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        justify="space-between"
+        wrap="wrap"
+        gap="md"
+      >
         <SegmentedControl
           radius={5}
           styles={{
@@ -55,10 +71,12 @@ const Report = () => {
             { label: "Sales", value: "sales" },
             { label: "GST", value: "gst" },
           ]}
-          defaultValue="stock"
-          transitionDuration={500}
+          defaultValue="Stock"
+          transitionDuration={300}
+          w={400}
         />
         <Group wrap="wrap">
+          <CustomDateInput mt={""} />
           <Select
             styles={{
               input: {
@@ -91,8 +109,13 @@ const Report = () => {
         </Group>
       </Flex>
 
-      {/* Report Section */}
-      <Paper mt={5} bg="#09090B" withBorder>
+      <Paper
+        mt={5}
+        bg="#09090B"
+        style={{
+          border: "1px solid #27272A",
+        }}
+      >
         <Stack p="md" gap="sm">
           <SegmentedControl
             radius={5}
@@ -107,20 +130,27 @@ const Report = () => {
               { label: "P & L", value: "pl" },
               { label: "Cash Summary", value: "cashSummer" },
             ]}
-            defaultValue="stock"
-            transitionDuration={500}
+            transitionDuration={300}
+            w={300}
           />
           <Title order={3} c="white" mt={10}>
-            Profit & Loss Report
+            Stock Report
           </Title>
-          <Text size="sm" c="#56565B">
-            Financial performance summary.
+          <Text size="sm" c="dimmed">
+            Detailed overview of current inventory levels.
           </Text>
         </Stack>
 
-        <Paper h={200} bg="#09090B" m="md" withBorder>
+        <Paper
+          h={200}
+          bg="#09090B"
+          m="md"
+          style={{
+            border: "1px solid #27272A",
+          }}
+        >
           <Text c="#56565B" p="md">
-            Profit & Loss Report Data
+            Stock Report Data (Table/Chart)
           </Text>
         </Paper>
       </Paper>

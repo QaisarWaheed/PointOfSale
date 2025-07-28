@@ -6,7 +6,6 @@ import {
   Stack,
   Text,
   Button,
-
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -15,14 +14,13 @@ const navItems = [
   { to: "../dashboard/home", label: "Dashboard" },
   { to: "../dashboard/inventory", label: "Inventory" },
   { to: "../dashboard/challan", label: "Delivery Challans" },
-  { to: "../dashboard/invoicing", label: "Invoicing" },
+  { to: "../dashboard/invoice", label: "Invoicing" },
   { to: "../dashboard/accounts", label: "Accounts" },
   { to: "../dashboard/expenses", label: "Expenses" },
   { to: "../dashboard/cash-flow", label: "Cash Flow" },
   { to: "../dashboard/report", label: "Reports" },
   { to: "../dashboard/user-management", label: "User Management" },
   { to: "../dashboard/point-of-sale", label: "Point of Sale" },
-  { to: "../dashboard/inventory/add-product", label: "Add Product" },
 ];
 
 const DashboardLayout = () => {
@@ -39,7 +37,6 @@ const DashboardLayout = () => {
         collapsed: { mobile: !opened },
       }}
     >
-     
       <AppShell.Header bg="#09090B" px="md">
         <Group h="100%" justify="space-between">
           <Group>
@@ -57,14 +54,19 @@ const DashboardLayout = () => {
         </Group>
       </AppShell.Header>
 
-    
       <AppShell.Navbar p="md" bg="#09090B">
         <Stack gap="xs">
           {navItems.map((item) => {
-            const isActive = location.pathname.includes(item.to.split("/").pop()!);
+            const isActive = location.pathname.includes(
+              item.to.split("/").pop()!
+            );
 
             return (
-              <NavLink key={item.to} to={item.to} style={{ textDecoration: "none" }}>
+              <NavLink
+                key={item.to}
+                to={item.to}
+                style={{ textDecoration: "none" }}
+              >
                 <Button
                   fullWidth
                   variant={isActive ? "light" : "subtle"}
@@ -84,7 +86,6 @@ const DashboardLayout = () => {
         </Stack>
       </AppShell.Navbar>
 
-      
       <AppShell.Main bg="#1C1B22">
         <Outlet />
       </AppShell.Main>

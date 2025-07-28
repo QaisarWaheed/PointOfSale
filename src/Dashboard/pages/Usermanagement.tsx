@@ -12,9 +12,12 @@ import {
   Select,
   Flex,
   useMantineTheme,
+  Menu,
+  ActionIcon,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { JSX } from "react";
+import { IconSearch, IconDots, IconEdit, IconTrash } from "@tabler/icons-react";
 
 type Element = {
   userId: string;
@@ -68,17 +71,31 @@ const UserManagement = (): JSX.Element => {
         transition: "background-color 0.2s",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#656b74ff";
+        e.currentTarget.style.backgroundColor = "#27272A";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.backgroundColor = "transparent";
       }}
     >
-      <Table.Td c={"#A1A1AA"}>{element.userId}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.name}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.email}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.role}</Table.Td>
-      <Table.Td c={"#A1A1AA"}>{element.action}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.userId}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.name}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.email}</Table.Td>
+      <Table.Td c="#A1A1AA">{element.role}</Table.Td>
+      <Table.Td>
+        <Menu shadow="md" width={150}>
+          <Menu.Target>
+            <ActionIcon variant="subtle" color="gray">
+              <IconDots size={18} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item leftSection={<IconEdit size={16} />}>Edit</Menu.Item>
+            <Menu.Item color="red" leftSection={<IconTrash size={16} />}>
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Table.Td>
     </Table.Tr>
   ));
 
@@ -88,8 +105,16 @@ const UserManagement = (): JSX.Element => {
 
   return (
     <>
-      
-      <Paper withBorder bg={"#111111"} radius="md" mt="md" p="md">
+      {/* User List */}
+      <Paper
+        style={{
+          border: "1px solid #27272A",
+        }}
+        bg="#09090B"
+        radius="md"
+        mt="md"
+        p="md"
+      >
         <Stack gap="sm">
           <Title order={3} c="white">
             User List
@@ -109,6 +134,7 @@ const UserManagement = (): JSX.Element => {
             onChange={handleSearchChange}
             radius="md"
             mb="md"
+            leftSection={<IconSearch size={18} />}
           />
         </Stack>
 
@@ -118,8 +144,7 @@ const UserManagement = (): JSX.Element => {
             verticalSpacing="md"
             highlightOnHover
             c="white"
-            bg="#111111"
-           
+            bg="#09090B"
           >
             <Table.Thead>
               <Table.Tr>
@@ -135,8 +160,15 @@ const UserManagement = (): JSX.Element => {
         </div>
       </Paper>
 
-    
-      <Paper bg="#09090B" withBorder mt="xl" p="md">
+      {/* Add/Edit User Form */}
+      <Paper
+        bg="#09090B"
+        mt="xl"
+        p="md"
+        style={{
+          border: "1px solid #27272A",
+        }}
+      >
         <Stack gap="xs">
           <Title order={3} c="white">
             Add/Edit User
@@ -144,13 +176,7 @@ const UserManagement = (): JSX.Element => {
           <Text c="#A1A1AA">Create a new user or modify an existing one.</Text>
         </Stack>
 
-       
-        <Flex
-          direction={isMobile ? "column" : "row"}
-          gap="md"
-          mt="md"
-          mb="md"
-        >
+        <Flex direction={isMobile ? "column" : "row"} gap="md" mt="md" mb="md">
           <TextInput
             flex={1}
             label="Name"
@@ -179,15 +205,11 @@ const UserManagement = (): JSX.Element => {
           />
         </Flex>
 
-        <Flex
-          direction={isMobile ? "column" : "row"}
-          gap="md"
-          mb="md"
-        >
+        <Flex direction={isMobile ? "column" : "row"} gap="md" mb="md">
           <PasswordInput
             flex={1}
             label="Password"
-            placeholder="********"
+            placeholder="Create Password"
             styles={{
               input: {
                 backgroundColor: "#09090B",
